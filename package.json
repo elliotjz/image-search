@@ -1,0 +1,25 @@
+{
+  "name": "image-search",
+  "version": "1.0.0",
+  "description": "Free Code Camp API project - Image Search Abstraction Layer",
+  "engines": {
+    "node": "7.8.0"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elliotjz/image-search.git"
+  },
+  "author": "elliotjz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elliotjz/image-search/issues"
+  },
+  "homepage": "https://github.com/elliotjz/image-search#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
