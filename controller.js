@@ -1,3 +1,4 @@
+let $ = require('jQuery');
 
 module.exports = function(app) {
 
@@ -5,50 +6,19 @@ module.exports = function(app) {
 		res.sendFile(__dirname + '/routes/index.html');
 	})
 
-	app.get('/new/*', function(req, res) {
-		let url = req.url.slice(5);
-		let result;
-
-		if (url.match(/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/)) {
-
-			let countDoc = UrlModel.findOne({original_url: "counter"}, function(err, data) {
-				if (err) throw err;
-				let count = data.short_url;
-
-				let newUrl = { original_url: url, short_url: count};
-				let newUrlDoc = UrlModel(newUrl).save(function(err, data) {
-					if (err) throw err;
-					res.json({original_url: newUrl.original_url,
-						short_url: "https://elliotjz-url-shortener.herokuapp.com/" + count});
-				});
-
-				// Increment counter
-				UrlModel.update({original_url: "counter"}, {
-					$set: {
-						short_url: (parseInt(count) + 1).toString()
-					}
-				}, function(err, data) {
-					if (err) throw err;
-				});
-			});
-
-		} else {
-			newUrl = { Error: "Wrong URL format. Make sure you include the http://, https:// or ftp:// prefix." };
-			res.json(newUrl);
-		}
+	app.get('/api/*', function(req, res) {
+		let searchQuery = req.params[0];
+		let offset = req.query.offset || 10;
+		console.log("seachQuery: " + searchQuery);
+		console.log("offset: " + offset);
+		let url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=' + searchQuery;
+		$.getJSON(url, function(data) {
+			res.json(data)
+		})
 	})
 
-	app.get(/\/[0-9]/, function(req, res) {
-
-		let urlDoc = UrlModel.findOne({short_url: req.url.slice(1)}, function(err, data) {
-			if (err) throw err;
-			if (data && data.original_url !== "counter") {
-				let url = data.original_url;
-				res.redirect(url);
-			} else {
-				res.end("Short Url not found");
-			}
-		})
+	app.get('/home', function(req, res) {
+		res.end("home");
 	})
 
 	app.use(function(req, res, next) {
