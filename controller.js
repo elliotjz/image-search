@@ -31,10 +31,6 @@ module.exports = function(app) {
 			});
 	})
 
-	app.get('/home', function(req, res) {
-		res.end("home");
-	})
-
 	app.use(function(req, res, next) {
 	    res.status(400);
 	    res.end('404: File Not Found');
