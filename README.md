@@ -3,7 +3,7 @@ Free Code Camp API project - Image Search Abstraction Layer
 
 Search Usage:
 ```
-https://elliotjz-image-search.herokuapp.com/api/bernie sanders
+https://elliotjz-image-search.herokuapp.com/api/bernie sanders?offset=1
 ```
 
 Expected Response:
@@ -22,6 +22,8 @@ Expected Response:
 },
 ...
 ```
+
+The offset parameter controlls which page of results is returned.
 
 History Usage:
 
