@@ -41,6 +41,7 @@ Expected Response:
 ```
 
 [Use the app](https://elliotjz-image-search.herokuapp.com)
+
 [Source Code](https://github.com/elliotjz/image-search)
 
 
