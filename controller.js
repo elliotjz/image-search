@@ -1,8 +1,19 @@
 const GoogleImages = require('google-images');
+const mongoose = require('mongoose');
 
+// Database setup
+mongoose.connect(process.env.MLAB_URL);
+let imageSchema = new mongoose.Schema({
+	function: String,
+	search_history: Array
+})
+let ImageModel = mongoose.model('Search-history', imageSchema);
+
+// Google image search setup
 let cseId = '001981848172088204799:k_fo3dkd08w';
 let apiKey = 'AIzaSyAPvwEaQVM8sYED1ea6azG4cF-u7kF8IJ4';
 const client = new GoogleImages(cseId, apiKey);
+
 
 module.exports = function(app) {
 
@@ -11,16 +22,26 @@ module.exports = function(app) {
 	})
 
 	app.get('/api/*', function(req, res) {
-		
-		// Add a mongo db database to save recent searches
 
 		let searchQuery = req.params[0];
-		let offset = req.query.offset || 10;
+		let offset = req.query.offset || 1;
 		let resJSON = [];
+
+		let historyDoc = ImageModel.findOne({function: "store"}, function(err, data) {
+			if (err) throw err;
+			let history = data.search_history;
+			history.push(searchQuery);
+			ImageModel.update({function: "store"}, {
+				$set: {
+					search_history: history
+				}
+			}, function(err, data) {
+				if (err) throw err;
+			});
+		});
+
 		client.search(searchQuery, {page: offset})
 			.then(function(images) {
-				console.log("images.length: " + images.length);
-				console.log("images[0].type: " + images[0].type);
 
 				for (let i = 0; i < images.length; i++) {
 					resJSON.push({
@@ -32,6 +53,14 @@ module.exports = function(app) {
 				}
 				res.json(resJSON);
 			});
+	})
+
+	app.get('/recent', function(req, res) {
+		let historyDoc = ImageModel.findOne({function: "store"}, function(err, data) {
+			if (err) throw err;
+			let history = data.search_history;
+			res.json({recent_searches: history.slice(history.length - 10, history.length)});
+		});
 	})
 
 	app.use(function(req, res, next) {
