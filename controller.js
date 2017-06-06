@@ -11,6 +11,9 @@ module.exports = function(app) {
 	})
 
 	app.get('/api/*', function(req, res) {
+		
+		// Add a mongo db database to save recent searches
+
 		let searchQuery = req.params[0];
 		let offset = req.query.offset || 10;
 		let resJSON = [];
