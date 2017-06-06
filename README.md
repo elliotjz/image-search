@@ -1,12 +1,12 @@
 # image-search
 Free Code Camp API project - Image Search Abstraction Layer
 
-Search Usage:
+**Search Usage:**
 ```
 https://elliotjz-image-search.herokuapp.com/api/bernie sanders?offset=1
 ```
 
-Expected Response:
+**Expected Response:**
 ```
 {
 "url": "https://upload.wikimedia.org/wikipedia/commons/d/de/Bernie_Sanders.jpg",
@@ -25,13 +25,13 @@ Expected Response:
 
 The offset parameter controlls which page of results is returned.
 
-History Usage:
+**History Usage:**
 
 ```
 https://elliotjz-image-search.herokuapp.com/recent
 ```
 
-Expected Response:
+**Expected Response:**
 
 ```
 {
